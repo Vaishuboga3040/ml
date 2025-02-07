@@ -1,0 +1,39 @@
+!pip install pandas
+
+import pandas as pd
+
+
+data = pd.DataFrame ({
+    'Outlook': ['Sunny', 'Sunny', 'Overcast', 'Rainy', 'Rainy', 'Rainy', 'Overcast', 'Sunny','Sunny', 'Rainy'],
+    'Temperature': ['Hot', 'Hot', 'Hot', 'Mild', 'Cool', 'Cool', 'Cool', 'Mild', 'Cool', 'Mild'],
+    'Humidity': ['High', 'High', 'High', 'High', 'Normal', 'Normal', 'Normal', 'High', 'Normal','Normal'],
+    'Wind': ['Weak', 'Strong', 'Weak', 'Weak', 'Weak', 'Strong', 'Strong', 'Weak', 'Weak', 'Weak'],
+    'PlayTennis': ['No', 'No', 'Yes', 'Yes', 'Yes', 'No', 'Yes', 'No', 'Yes', 'Yes']
+    })
+# Display the dataset
+print("Sample Dataset:")
+print(data)
+
+
+
+# Load dataset into a pandas DataFrame
+df = pd.DataFrame(data)
+# Step 2: Implementing the FIND-S Algorithm
+def find_s_algorithm(data):
+  # Get the positive examples (PlayTennis = 'Yes')
+  positive_examples = data[data['PlayTennis'] == 'Yes']
+  # Initialize hypothesis with the first positive example (most specific)
+  hypothesis = positive_examples.iloc[0].drop('PlayTennis')
+  # Loop through the rest of the positive examples and generalize the hypothesis
+  for index, row in positive_examples.iterrows():
+    for feature in hypothesis.index:
+      if hypothesis[feature] != row[feature]:
+        hypothesis[feature] = '?'
+  return hypothesis
+
+
+
+hypothesis = find_s_algorithm(df)
+# Display the final specific hypothesis
+print("The most specific hypothesis is:")
+print(hypothesis)
